@@ -45,9 +45,9 @@ echo "Guess the secret number between 1 and 1000:"
 while [[ $GUESS -ne $RANDOM_NUMBER ]]
 do
   read GUESS
+  ((GUESS_COUNT++))
   if [[ $GUESS =~ ^(1000|[1-9][0-9]{0,2})$ ]]
   then
-    ((GUESS_COUNT++))
     if [[ $GUESS -gt $RANDOM_NUMBER ]]
     then
       echo "It's lower than that, guess again:"
