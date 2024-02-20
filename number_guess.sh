@@ -29,6 +29,7 @@ then
   # If user not found, add user to database.
   INSERT_USERNAME=$($PSQL "INSERT INTO users(username) VALUES ('$USERNAME')")
   echo "Welcome, $USERNAME! It looks like this is your first time here."
+  USERNAME_CHECK=$($PSQL "SELECT user_id FROM users WHERE username = '$USERNAME'")
 else
   # If returning user, get the games played and best game info.
   GAMES_PLAYED=$($PSQL "SELECT COUNT(*) FROM games WHERE user_id = $USERNAME_CHECK")
@@ -40,6 +41,7 @@ fi
 GUESS=0
 echo "Guess the secret number between 1 and 1000:"
 
+# Loop while the guess does not equal the random number and increment guess count appropriately"
 while [[ $GUESS -ne $RANDOM_NUMBER ]]
 do
   read GUESS
@@ -58,3 +60,8 @@ do
   fi
 done
 
+# Add game result to database
+ADD_GAME_RESULT=$($PSQL "INSERT INTO games(user_id, secret_number, guesses) VALUES ($USERNAME_CHECK, $RANDOM_NUMBER, $GUESS_COUNT)")
+
+# Print final response now number is guessed
+echo "You guessed it in $GUESS_COUNT tries. The secret number was $RANDOM_NUMBER. Nice job!"
