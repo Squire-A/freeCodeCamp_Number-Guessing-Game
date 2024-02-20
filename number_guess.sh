@@ -36,3 +36,25 @@ else
   echo "Welcome back, $USERNAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses."
 fi
 
+# Initialise GUESS and ask user for their guess
+GUESS=0
+echo "Guess the secret number between 1 and 1000:"
+
+while [[ $GUESS -ne $RANDOM_NUMBER ]]
+do
+  read GUESS
+  if [[ $GUESS =~ ^(1000|[1-9][0-9]{0,2})$ ]]
+  then
+    ((GUESS_COUNT++))
+    if [[ $GUESS -gt $RANDOM_NUMBER ]]
+    then
+      echo "It's lower than that, guess again:"
+    elif [[ $GUESS -lt $RANDOM_NUMBER ]]
+    then
+      echo "It's higher than that, guess again:"
+    fi
+  else
+    echo "That is not an integer, guess again:"
+  fi
+done
+
